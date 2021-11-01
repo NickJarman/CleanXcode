@@ -1,4 +1,6 @@
 #!/bin/zsh
+# Based on the script in this article: https://www.raywenderlich.com/19998365-understanding-and-managing-xcode-space
+
 function CleanXcodeDirectory() {
 	if [ -d $1 ]; then
 		echo "Cleaning $1";
@@ -17,6 +19,7 @@ function CleanXcodeDirectory() {
 
 			# Directory names are in numeric order so we can just delete <count> - <number-to-keep> directories, knowing that the ones which are not deleted are for the most recent OS releases.
 			for ((i = 1; i <= $CountToDelete; i++)); do
+				# Move the directory to trash rather than deleting it with rm -rf. This can be undone in the event of a mistake, or for testing.
 				osascript -e "tell application \"Finder\" to delete POSIX file \"${Filenames[$i]}\""
 			done
 		else
